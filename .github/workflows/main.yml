@@ -1,16 +1,25 @@
-name: Integration Test
-on: [push]
+name: jenkins-CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: master
+  pull_request:
+    branches: master
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow contains a single job called "build"
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Self test
-        id: selftest
-
-        # Put your action repo here
-        uses: jacobtomlinson/python-container-action@master
-
-      - name: Check outputs
-        run: |
-          test "${{ steps.selftest.outputs.myOutput }}" == "Hello world"
+      - name: Trigger jenkins job
+        uses: joshlk/jenkins-githubaction@master
+        with:
+          url: http://18.142.244.1:8080/
+          job_name: new_job
+          username: manoj
+          api_token: 11cc6e1b7b3ff4632c4f67e1faa9629c73
+          timeout: "1000"
