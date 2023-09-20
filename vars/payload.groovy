@@ -1,5 +1,5 @@
-def call(String payload) {
-  sh "echo ${payload} > repo.json"
+def call (){
+  sh "echo ${params.payload} > repo.json"
   sh "cat repo.json"
   def url = sh(script: "clone_url=\$(cat repo.json | grep -oP 'ssh_url:\\K\\S+' | cut -d' ' -f1); echo \$clone_url", returnStdout: true).trim()
   echo "The URL is: ${url}"
